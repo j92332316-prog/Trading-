@@ -207,6 +207,8 @@ def universe(day_df: pd.DataFrame, basic: pd.DataFrame) -> pd.DataFrame:
 def cost_line(hist: pd.DataFrame):
     """hist: one stock's rows, sorted by date, last 60 trading days."""
     h = hist.tail(60)
+    if h["trust_net"].isna().any():      # a day without T86 -> 無法確認, never guessed
+        return math.nan
     buy = h[h["trust_net"] > 0]
     if buy.empty:
         return math.nan
