@@ -420,9 +420,9 @@ def write_notice(R, d):
         if ev["filled"]:
             for t in ev["filled"]:
                 if t["side"] == "BUY":
-                    L.append(f"- 🟢 買進 {t['code']} {t['name']}　{t['shares']:,} 股 @ {t['price']:.2f}　成本 {money(-t['net'])}")
+                    L.append(f"- 🟢 買進 {t['code']} {t['name']}　{t['shares']:,} 股 × {t['price']:.2f} = {money(t['shares']*t['price'])}　手續費 {money(t['fee'])}　共付 {money(-t['net'])}")
                 else:
-                    L.append(f"- 🔴 賣出 {t['code']} {t['name']}　{t['shares']:,} 股 @ {t['price']:.2f}　損益 {money(t['pnl'])}（{pct(t['ret'])}）")
+                    L.append(f"- 🔴 賣出 {t['code']} {t['name']}　{t['shares']:,} 股 × {t['price']:.2f} = {money(t['shares']*t['price'])}　稅費 {money(t['fee'])}　實收 {money(t['net'])}　損益 {money(t['pnl'])}（{pct(t['ret'])}）")
         else:
             L.append("- 無")
         for side, code, why in ev["unfilled"]:
@@ -437,11 +437,14 @@ def write_notice(R, d):
             L.append("- 無")
         for code in pend.get("sell", []):
             _, c, cl = pend["exits_info"][code]
-            L.append(f"- 🔴 賣出 {code} {R['pos'][code]['name']}（收盤 {c:.2f} < 投信成本線估 {cl:.2f}）")
+            p_ = R['pos'][code]
+            L.append(f"- 🔴 賣出 {code} {p_['name']}：{p_['shares']:,} 股，約 {money(p_['shares'] * c)} 元（以今收估，實際用明日開盤價；收盤 {c:.2f} < 投信成本線估 {cl:.2f}）")
         sig = R["signals"][d].set_index("code")
         for code, name in pend.get("buy", []):
             s = sig.loc[code]
-            L.append(f"- 🟢 買進 {code} {name}（市值第 {int(s['rank'])} 名；收 {s['close']:.2f} > MA20 {s['ma20']:.2f}；"
+            o = s['close']
+            L.append(f"- 🟢 買進 {code} {name}：預計 {int(ALLOC // o):,} 股，約 {money(int(ALLOC // o) * o)} 元（以今收 {o:.2f} 估，實際用明日開盤價）")
+            L.append(f"  理由：市值第 {int(s['rank'])} 名；收 {s['close']:.2f} > MA20 {s['ma20']:.2f}；"
                      f"量 {s['vol']/s['vma20']:.2f} 倍；營收 {s['rev_ym']} YoY {s['rev_yoy']:+.1f}%）")
         for code, name in pend.get("waitlist", []):
             L.append(f"- ⏸️ 候補（名額不足）{code} {name}")
