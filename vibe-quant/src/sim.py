@@ -234,8 +234,8 @@ def evaluate(all_df: pd.DataFrame, d: str, basic: pd.DataFrame, rev: pd.DataFram
         prev20 = h.iloc[-21:-1]["volume"] if len(h) >= 21 else pd.Series(dtype=float)
         c["vol"] = u["volume"]
         c["vma20"] = prev20.mean() if len(prev20) == 20 else math.nan
-        c["above_ma"] = (u["close"] > c["ma20"]) if not math.isnan(c["ma20"]) else None
-        c["vol_ok"] = (u["volume"] > 1.5 * c["vma20"]) if not math.isnan(c["vma20"]) else None
+        c["above_ma"] = bool(u["close"] > c["ma20"]) if not math.isnan(c["ma20"]) else None
+        c["vol_ok"] = bool(u["volume"] > 1.5 * c["vma20"]) if not math.isnan(c["vma20"]) else None
         if u["code"] in rev_m.index and not math.isnan(rev_m.loc[u["code"], "yoy"]):
             c["rev_ym"] = str(rev_m.loc[u["code"], "ym"])
             c["rev_yoy"] = float(rev_m.loc[u["code"], "yoy"])
