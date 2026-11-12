@@ -16,8 +16,60 @@
    "equity": 100000.0,
    "bench": 102031.4021,
    "npos": 0
+  },
+  {
+   "date": "20261112",
+   "cash": 60165.41649249999,
+   "mv": 38638.9,
+   "equity": 98804.31649249999,
+   "bench": 99808.4021,
+   "npos": 2
   }
  ],
- "trades": [],
- "positions": {}
+ "trades": [
+  {
+   "date": "20261112",
+   "side": "BUY",
+   "code": "1303",
+   "name": "南亞",
+   "shares": 63,
+   "price": 315.0,
+   "fee": 28.28,
+   "net": -19873.28,
+   "pnl": null,
+   "ret": null,
+   "signal": "20261111"
+  },
+  {
+   "date": "20261112",
+   "side": "BUY",
+   "code": "1802",
+   "name": "台玻",
+   "shares": 247,
+   "price": 80.7,
+   "fee": 28.4,
+   "net": -19961.3,
+   "pnl": null,
+   "ret": null,
+   "signal": "20261111"
+  }
+ ],
+ "positions": {
+  "1303": {
+   "name": "南亞",
+   "shares": 63,
+   "entry": 315.0,
+   "entry_date": "20261112",
+   "cost": 19873.279125,
+   "last": 293.0
+  },
+  "1802": {
+   "name": "台玻",
+   "shares": 247,
+   "entry": 80.7,
+   "entry_date": "20261112",
+   "cost": 19961.304382500002,
+   "last": 81.7
+  }
+ }
 }
